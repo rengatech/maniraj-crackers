@@ -7,7 +7,7 @@ return [
      * put them (manually) here.
      */
     'settings' => [
-       
+        GeneralSettings::class
     ],
 
     /*
@@ -75,7 +75,7 @@ return [
      * register them.
      */
     'auto_discover_settings' => [
-        app_path('Settings'),
+        
     ],
 
     /*
