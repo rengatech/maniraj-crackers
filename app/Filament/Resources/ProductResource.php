@@ -58,11 +58,11 @@ class ProductResource extends Resource
 
                 Select::make('unit')
                     ->options([
-                        'piece' => 'Piece',
-                        'box' => 'Box',
-                        'packet' => 'Packet',
-                        'set' => 'Set',
-                        'kg' => 'Kg',
+                        '1 Pkt' => '1 Pkt',
+                        '1 Box' => '1 Box',
+                        '1 Pce' => '1 Pce',
+                        '10 Pcs' => '10 pcs',
+                        
                     ])
                     ->required(),
 
