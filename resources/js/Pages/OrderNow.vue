@@ -64,7 +64,7 @@ const finalPrice = (price) => price - discountAmount(price)
 const discountTotalAmount = computed(() =>
     Math.round((props.global_discount / 100) * totalPrice.value)
 )
-const NO_DISCOUNT_CATEGORIES = ['DIGITAL POPS', 'SPL GIFT BOXES'];
+const NO_DISCOUNT_CATEGORIES = ['GIFT BOX (NO DISCOUNT)'];
 
 const isExcludedItem = (item) => NO_DISCOUNT_CATEGORIES.includes(item.category_name?.trim().toUpperCase());
 const itemFinalPrice = (item) => isExcludedItem(item) ? item.price : finalPrice(item.price);
@@ -250,23 +250,21 @@ onUnmounted(() => {
                     </svg>
                 </button>
             </div>
-
-            <!-- Top Totals Bar -->
-             <div class="sticky top-[110px] md:top-[140px] z-40 flex justify-between items-center bg-blue-500 px-2 sm:px-6 py-2 sm:py-4 font-bold text-white text-xs sm:text-base border-b-2 border-white shadow-sm">
-                <div class="flex flex-col sm:flex-row sm:gap-2 items-center justify-center w-1/3 text-center">
-                    <span class="whitespace-nowrap mb-0.5 sm:mb-0">Total Products :</span>
-                    <span class="text-[13px] sm:text-base">{{ totalItems }}</span>
-                </div>
-                <div class="flex flex-col sm:flex-row sm:gap-2 items-center justify-center w-1/3 text-center">
-                    <span class="whitespace-nowrap mb-0.5 sm:mb-0">Discount Total :</span>
-                    <span class="text-[13px] sm:text-base">{{ global_discount }} %</span>
-                </div>
-                <div class="flex flex-col sm:flex-row sm:gap-2 items-center justify-center w-1/3 text-center">
-                    <span class="whitespace-nowrap mb-0.5 sm:mb-0 text-white-500">Overall Total :</span>
-                    <span class="text-[13px] sm:text-base text-white-500">₹ {{ discountedTotal }}</span>
-                </div>
-            </div>
-
+<!-- Top Totals Bar -->
+<div class="sticky top-20 z-40 flex justify-between items-center bg-blue-500 px-2 sm:px-6 py-2 sm:py-4 font-bold text-white text-xs sm:text-base border-b-2 border-white shadow-sm">
+    <div class="flex flex-col sm:flex-row sm:gap-2 items-center justify-center w-1/3 text-center">
+        <span class="whitespace-nowrap mb-0.5 sm:mb-0">Total Products :</span>
+        <span class="text-[13px] sm:text-base">{{ totalItems }}</span>
+    </div>
+    <div class="flex flex-col sm:flex-row sm:gap-2 items-center justify-center w-1/3 text-center">
+        <span class="whitespace-nowrap mb-0.5 sm:mb-0">Discount Total :</span>
+        <span class="text-[13px] sm:text-base">{{ global_discount }} %</span>
+    </div>
+    <div class="flex flex-col sm:flex-row sm:gap-2 items-center justify-center w-1/3 text-center">
+        <span class="whitespace-nowrap mb-0.5 sm:mb-0 text-white-500">Overall Total :</span>
+        <span class="text-[13px] sm:text-base text-white-500">₹ {{ discountedTotal }}</span>
+    </div>
+</div>
             <!-- Table / Mobile Cards -->
             <div class="shadow-sm bg-[#e5e7eb]">
                 <!-- Desktop View (hidden on mobile) -->
@@ -313,8 +311,8 @@ onUnmounted(() => {
                                </td>
                                <!-- Price -->
                                <td class="px-4 py-3 text-center">
-                             <div v-if="global_discount > 0 && !['DIGITAL POPS', 'SPL GIFT BOXES'].includes(category.category?.trim().toUpperCase())" class="line-through text-gray-400 text-xs">₹ {{ product.price }}</div>
-                             <div v-if="global_discount > 0 && !['DIGITAL POPS', 'SPL GIFT BOXES'].includes(category.category?.trim().toUpperCase())" class="text-green-600 font-bold">₹ {{ finalPrice(product.price) }}</div>
+                             <div v-if="global_discount > 0 && !['GIFT BOX (NO DISCOUNT)'].includes(category.category?.trim().toUpperCase())" class="line-through text-gray-400 text-xs">₹ {{ product.price }}</div>
+                             <div v-if="global_discount > 0 && !['GIFT BOX (NO DISCOUNT)'].includes(category.category?.trim().toUpperCase())" class="text-green-600 font-bold">₹ {{ finalPrice(product.price) }}</div>
                              <div v-else class="text-gray-700 font-bold">₹ {{ product.price }}</div>
                              </td>
                                <!-- Quantity -->
@@ -330,7 +328,7 @@ onUnmounted(() => {
 
                                 <!-- Total / Add -->
                                  <td class="px-4 py-3 text-center font-bold text-gray-800">
-                  ₹ {{ (itemCount(product.id) * (global_discount > 0 && !['DIGITAL POPS', 'SPL GIFT BOXES'].includes(category.category?.trim().toUpperCase()) ? finalPrice(product.price) : product.price)).toFixed(2) }}
+                  ₹ {{ (itemCount(product.id) * (global_discount > 0 && !['GIFT BOX (NO DISCOUNT)'].includes(category.category?.trim().toUpperCase()) ? finalPrice(product.price) : product.price)).toFixed(2) }}
                          </td>
                         </tr>
                         </tbody>
@@ -366,8 +364,8 @@ onUnmounted(() => {
                                     <div v-if="product.tamil_name" class="text-gray-500 text-xs mt-0.5 truncate">{{ product.tamil_name }}</div>
                                     <div v-if="product.unit" class="text-gray-600 text-xs mt-0.5">{{ product.unit }}</div>
                                     <div class="mt-1 flex items-center gap-2">
-                                       <span v-if="global_discount > 0 && !['DIGITAL POPS', 'SPL GIFT BOXES'].includes(category.category?.trim().toUpperCase())" class="line-through text-gray-400 text-xs">₹{{ product.price }}</span>
-                                       <span v-if="global_discount > 0 && !['DIGITAL POPS', 'SPL GIFT BOXES'].includes(category.category?.trim().toUpperCase())" class="text-green-600 font-bold text-sm">₹{{ finalPrice(product.price) }}</span>
+                                       <span v-if="global_discount > 0 && !['GIFT BOX (NO DISCOUNT)'].includes(category.category?.trim().toUpperCase())" class="line-through text-gray-400 text-xs">₹{{ product.price }}</span>
+                                       <span v-if="global_discount > 0 && !['GIFT BOX (NO DISCOUNT)'].includes(category.category?.trim().toUpperCase())" class="text-green-600 font-bold text-sm">₹{{ finalPrice(product.price) }}</span>
                                        <span v-else class="text-gray-700 font-bold text-sm">₹{{ product.price }}</span>
                                     </div>
                                 </div>
