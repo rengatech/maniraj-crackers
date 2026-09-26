@@ -120,7 +120,7 @@ const features = [
             :images="banner_images"
             fallback="/assets/img/aboutpage-banner.png"
             alt="About Maniraj Crackers"
-            img-class="aspect-[2205/690] object-cover object-center brightness-105"
+            img-class="brightness-105"
         />
 
         <div class="mx-auto max-w-6xl px-4 py-12">

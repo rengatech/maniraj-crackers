@@ -75,7 +75,6 @@ const scrollToCheckout = () => {
             :images="banner_images"
             fallback="/assets/img/homepage-banner.png"
             alt="Maniraj Crackers"
-            img-class="h-auto md:h-[600px] md:object-cover"
             class="text-center text-white"
         >
             <div class="animate-shimmer pointer-events-none absolute inset-0"></div>

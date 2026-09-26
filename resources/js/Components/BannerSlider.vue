@@ -37,6 +37,7 @@ const start = () => {
     if (slides.value.length > 1) timer = setInterval(next, props.interval)
 }
 const restart = () => start()
+const onVisibility = () => (document.hidden ? stop() : start())
 
 // touch swipe
 let touchX = null
@@ -49,21 +50,25 @@ const onTouchEnd = (e) => {
 }
 
 watch(slides, () => { current.value = 0; start() })
-onMounted(start)
-onBeforeUnmount(stop)
+onMounted(() => {
+    start()
+    document.addEventListener('visibilitychange', onVisibility)
+})
+onBeforeUnmount(() => {
+    stop()
+    document.removeEventListener('visibilitychange', onVisibility)
+})
 </script>
 
 <template>
     <div
         v-if="slides.length"
         class="relative w-full overflow-hidden"
-        @mouseenter="stop"
-        @mouseleave="start"
         @touchstart.passive="onTouchStart"
         @touchend.passive="onTouchEnd"
     >
-        <!-- first slide sets the height, others are absolutely stacked -->
-        <div class="relative">
+        <!-- all slides share one grid cell at natural size; no cropping -->
+        <div class="grid">
             <img
                 v-for="(src, i) in slides"
                 :key="src"
@@ -73,10 +78,9 @@ onBeforeUnmount(stop)
                 :loading="i === 0 ? 'eager' : 'lazy'"
                 decoding="async"
                 :class="[
-                    'block w-full transition-opacity duration-700 ease-in-out',
+                    'block w-full h-auto self-center [grid-area:1/1] transition-opacity duration-700 ease-in-out',
                     imgClass,
-                    i === 0 ? 'relative' : 'absolute inset-0 h-full object-cover',
-                    i === current ? 'opacity-100' : 'opacity-0',
+                    i === current ? 'opacity-100' : 'opacity-0 pointer-events-none',
                 ]"
             />
         </div>
