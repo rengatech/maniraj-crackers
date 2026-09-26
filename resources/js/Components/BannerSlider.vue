@@ -16,20 +16,17 @@ const slides = computed(() => {
 
 const current = ref(0)
 const root = ref(null)
-const ratios = ref({}) // src -> naturalHeight / naturalWidth
+const ratios = ref({}) // slide index -> naturalHeight / naturalWidth
 const width = ref(0)
 let timer = null
 
-const onImgLoad = (e) => {
-    const img = e.target
-    if (img.naturalWidth) ratios.value = { ...ratios.value, [img.currentSrc || img.src]: img.naturalHeight / img.naturalWidth }
+const onImgLoad = (i, img) => {
+    if (img.naturalWidth) ratios.value = { ...ratios.value, [i]: img.naturalHeight / img.naturalWidth }
 }
 const measure = () => { if (root.value) width.value = root.value.clientWidth }
-const heightStyle = computed(() => {
-    const src = slides.value[current.value]
-    const r = ratios.value[src] ?? Object.values(ratios.value)[0]
-    return r && width.value ? { height: Math.round(width.value * r) + 'px' } : {}
-})
+const currentRatio = computed(() => ratios.value[current.value] ?? Object.values(ratios.value)[0])
+const ready = computed(() => Boolean(currentRatio.value && width.value))
+const heightStyle = computed(() => (ready.value ? { height: Math.round(width.value * currentRatio.value) + 'px' } : {}))
 
 const next = () => {
     current.value = (current.value + 1) % slides.value.length
@@ -68,7 +65,7 @@ onMounted(() => {
     measure()
     start()
     // ratios for already-cached images whose load event fired before hydration
-    root.value?.querySelectorAll('img').forEach((img) => { if (img.complete) onImgLoad({ target: img }) })
+    root.value?.querySelectorAll('img[data-slide]').forEach((img) => { if (img.complete) onImgLoad(Number(img.dataset.slide), img) })
     window.addEventListener('resize', measure)
     document.addEventListener('visibilitychange', onVisibility)
 })
@@ -88,18 +85,20 @@ onBeforeUnmount(() => {
         @touchend.passive="onTouchEnd"
     >
         <!-- container height follows the current slide's aspect ratio; images are never cropped -->
-        <div class="grid transition-[height] duration-700 ease-in-out" :style="heightStyle">
+        <div :class="['relative transition-[height] duration-700 ease-in-out', ready ? '' : 'grid']" :style="heightStyle">
             <img
                 v-for="(src, i) in slides"
                 :key="src"
                 :src="src"
                 :alt="alt"
+                :data-slide="i"
                 :fetchpriority="i === 0 ? 'high' : 'auto'"
                 :loading="i === 0 ? 'eager' : 'lazy'"
                 decoding="async"
-                @load="onImgLoad"
+                @load="onImgLoad(i, $event.target)"
                 :class="[
-                    'block w-full h-full object-contain self-center [grid-area:1/1] transition-opacity duration-700 ease-in-out',
+                    'block w-full transition-opacity duration-700 ease-in-out',
+                    ready ? 'absolute inset-0 h-full object-contain' : 'h-auto self-center [grid-area:1/1]',
                     imgClass,
                     i === current ? 'opacity-100' : 'opacity-0 pointer-events-none',
                 ]"
