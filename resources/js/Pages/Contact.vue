@@ -194,7 +194,7 @@ const submitForm = () => {
             <!-- Google Maps -->
             <div class="mt-8">
                 <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d26472.295308145178!2d77.74708833362985!3d9.497399906356703!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1s4%2F320%2C%20Sivakasi%20to%20kazhugumalai%20main%20road%2C%20Naduvappatti%2C%20627713!5e0!3m2!1sen!2sin!4v1789545389877!5m2!1sen!2sin"
+                    src="https://maps.google.com/maps?q=9.252053,77.738075&z=16&output=embed"
                     class="h-80 w-full rounded-xl"
                     style="border:0;"
                     allowfullscreen=""
