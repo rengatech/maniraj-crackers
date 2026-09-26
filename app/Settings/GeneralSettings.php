@@ -15,7 +15,8 @@ class GeneralSettings extends Settings
     public $mobile_number_1;
     public $mobile_number_2;
     public string $marquee_content;
-    
+    public array $home_banner_images;
+    public array $about_banner_images;
 
     public static function group(): string
     {

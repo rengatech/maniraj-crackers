@@ -6,6 +6,7 @@ use App\Settings\GeneralSettings;
 use Filament\Pages\SettingsPage;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\FileUpload;
 use Filament\Schemas\Schema;
 
 
@@ -60,6 +61,32 @@ class Settings extends SettingsPage
             ->label('Marquee Content')
             ->required()
             ->maxLength(455),
+
+            FileUpload::make('home_banner_images')
+            ->label('Home Banner Images')
+            ->helperText('Upload one or more images. Multiple images show as a slider on the home page.')
+            ->image()
+            ->multiple()
+            ->reorderable()
+            ->appendFiles()
+            ->disk('public')
+            ->directory('banners/home')
+            ->visibility('public')
+            ->imagePreviewHeight('120')
+            ->panelLayout('grid'),
+
+            FileUpload::make('about_banner_images')
+            ->label('About Banner Images')
+            ->helperText('Upload one or more images. Multiple images show as a slider on the about page.')
+            ->image()
+            ->multiple()
+            ->reorderable()
+            ->appendFiles()
+            ->disk('public')
+            ->directory('banners/about')
+            ->visibility('public')
+            ->imagePreviewHeight('120')
+            ->panelLayout('grid'),
 
         ]);
     }

@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
+import BannerSlider from '@/Components/BannerSlider.vue'
 import { Head } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
@@ -14,6 +15,7 @@ const props = defineProps({
     mobile_number_3: Number,
     mobile_number_4: Number,
     mobile_number_5: Number,
+    banner_images: { type: Array, default: () => [] },
 })
 
 const openFaq = ref(null)
@@ -114,21 +116,12 @@ const features = [
         </Transition>
 
         <!-- Top Banner -->
-       <div class="relative w-full aspect-[2205/690] flex items-center justify-center overflow-hidden">
-    <img
-        src="/assets/img/aboutpage-banner.png"
-        alt="About Maniraj Crackers"
-        width="2205"
-        height="500"
-        fetchpriority="high"
-        decoding="async"
-        class="absolute inset-0 h-full w-full object-cover object-center brightness-105"
-    />
-    <div class="relative z-10 text-center">
-        <h1 class="text-5xl md:text-6xl font-black text-white drop-shadow-xl tracking-widest uppercase" style="text-shadow: 3px 3px 6px rgba(0,0,0,0.6);">
-        </h1>
-    </div>
-</div>
+        <BannerSlider
+            :images="banner_images"
+            fallback="/assets/img/aboutpage-banner.png"
+            alt="About Maniraj Crackers"
+            img-class="aspect-[2205/690] object-cover object-center brightness-105"
+        />
 
         <div class="mx-auto max-w-6xl px-4 py-12">
          <!-- FAQ Section -->

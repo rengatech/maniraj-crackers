@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
+import BannerSlider from '@/Components/BannerSlider.vue'
 import { Head } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import { router } from '@inertiajs/vue3'
@@ -17,6 +18,7 @@ const props = defineProps({
     marquee_content: Object,
     bank_details: Object,
     company_address: String,
+    banner_images: { type: Array, default: () => [] },
 })
 
 const showContactModal = ref(false)
@@ -69,15 +71,15 @@ const scrollToCheckout = () => {
         </Transition>
 
         <!-- Hero Section -->
-          <div class="relative overflow-hidden text-center text-white">
-    <img
-        src="/assets/img/homepage-banner.png"
-        alt="Maniraj Crackers"
-        class="block w-full h-auto md:h-[600px] md:w-full md:object-cover"
-    />
-
-    <div class="animate-shimmer absolute inset-0"></div>
-</div>
+        <BannerSlider
+            :images="banner_images"
+            fallback="/assets/img/homepage-banner.png"
+            alt="Maniraj Crackers"
+            img-class="h-auto md:h-[600px] md:object-cover"
+            class="text-center text-white"
+        >
+            <div class="animate-shimmer pointer-events-none absolute inset-0"></div>
+        </BannerSlider>
 
 
         <!-- Marquee / Announcement -->

@@ -43,6 +43,7 @@ Route::get('/', function (GeneralSettings $settings) {
             'mobile_number_2' => $settings->mobile_number_2,
             'marquee_content' => $settings->marquee_content,
             'company_address' => $settings->company_address,
+            'banner_images' => $settings->home_banner_images,
 
         ]
 );
@@ -86,6 +87,7 @@ Route::get('/about', function (GeneralSettings $settings) {
             'mobile_number_1' => $settings->mobile_number_1,
             'mobile_number_2' => $settings->mobile_number_2,
             'company_address' => $settings->company_address,
+            'banner_images' => $settings->about_banner_images,
 
         ]
 );
