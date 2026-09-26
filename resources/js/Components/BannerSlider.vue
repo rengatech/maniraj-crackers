@@ -15,7 +15,21 @@ const slides = computed(() => {
 })
 
 const current = ref(0)
+const root = ref(null)
+const ratios = ref({}) // src -> naturalHeight / naturalWidth
+const width = ref(0)
 let timer = null
+
+const onImgLoad = (e) => {
+    const img = e.target
+    if (img.naturalWidth) ratios.value = { ...ratios.value, [img.currentSrc || img.src]: img.naturalHeight / img.naturalWidth }
+}
+const measure = () => { if (root.value) width.value = root.value.clientWidth }
+const heightStyle = computed(() => {
+    const src = slides.value[current.value]
+    const r = ratios.value[src] ?? Object.values(ratios.value)[0]
+    return r && width.value ? { height: Math.round(width.value * r) + 'px' } : {}
+})
 
 const next = () => {
     current.value = (current.value + 1) % slides.value.length
@@ -51,11 +65,16 @@ const onTouchEnd = (e) => {
 
 watch(slides, () => { current.value = 0; start() })
 onMounted(() => {
+    measure()
     start()
+    // ratios for already-cached images whose load event fired before hydration
+    root.value?.querySelectorAll('img').forEach((img) => { if (img.complete) onImgLoad({ target: img }) })
+    window.addEventListener('resize', measure)
     document.addEventListener('visibilitychange', onVisibility)
 })
 onBeforeUnmount(() => {
     stop()
+    window.removeEventListener('resize', measure)
     document.removeEventListener('visibilitychange', onVisibility)
 })
 </script>
@@ -63,12 +82,13 @@ onBeforeUnmount(() => {
 <template>
     <div
         v-if="slides.length"
+        ref="root"
         class="relative w-full overflow-hidden"
         @touchstart.passive="onTouchStart"
         @touchend.passive="onTouchEnd"
     >
-        <!-- all slides share one grid cell at natural size; no cropping -->
-        <div class="grid">
+        <!-- container height follows the current slide's aspect ratio; images are never cropped -->
+        <div class="grid transition-[height] duration-700 ease-in-out" :style="heightStyle">
             <img
                 v-for="(src, i) in slides"
                 :key="src"
@@ -77,8 +97,9 @@ onBeforeUnmount(() => {
                 :fetchpriority="i === 0 ? 'high' : 'auto'"
                 :loading="i === 0 ? 'eager' : 'lazy'"
                 decoding="async"
+                @load="onImgLoad"
                 :class="[
-                    'block w-full h-auto self-center [grid-area:1/1] transition-opacity duration-700 ease-in-out',
+                    'block w-full h-full object-contain self-center [grid-area:1/1] transition-opacity duration-700 ease-in-out',
                     imgClass,
                     i === current ? 'opacity-100' : 'opacity-0 pointer-events-none',
                 ]"
