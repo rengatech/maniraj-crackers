@@ -174,6 +174,20 @@ onMounted(() => {
             </div>
         </div>
 
+        <div class="footer-disclaimer">
+    <p>
+        As per the 2018 Supreme Court order, online sales of firecrackers are not permitted!
+        We value our customers and, at the same time, respect jurisdiction.
+        We request you to add your products to the cart and submit the required crackers through the inquiry button.
+        We will contact you within 24 hours and confirm the order through WhatsApp or a phone call.
+        Please add and submit your inquiries and enjoy your Diwali with Maniraj Crackers.
+        Our GST No.xxxxx.
+        Maniraj Crackers as a company follows 100% legal and statutory compliances,
+        and all our shops and go-downs are maintained as per the explosive acts.
+        We send the parcels through registered and legal transport service providers.
+    </p>
+</div>
+
         <!-- Bottom bar -->
         <div class="relative z-10 border-t border-blue-900/60 bg-[#02091f]/80 py-4 backdrop-blur-sm">
             <p class="text-center text-xs text-gray-300">
@@ -182,3 +196,16 @@ onMounted(() => {
         </div>
     </footer>
 </template>
+
+<style scoped>
+.footer-disclaimer {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    padding: 16px 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.7;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+</style>
