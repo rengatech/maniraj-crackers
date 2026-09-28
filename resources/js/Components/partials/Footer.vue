@@ -181,7 +181,7 @@ onMounted(() => {
         We request you to add your products to the cart and submit the required crackers through the inquiry button.
         We will contact you within 24 hours and confirm the order through WhatsApp or a phone call.
         Please add and submit your inquiries and enjoy your Diwali with Maniraj Crackers.
-        Our GST No.xxxxx.
+        Our GST No. 33BMBPM3215P1Z1.
         Maniraj Crackers as a company follows 100% legal and statutory compliances,
         and all our shops and go-downs are maintained as per the explosive acts.
         We send the parcels through registered and legal transport service providers.
