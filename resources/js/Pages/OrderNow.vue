@@ -112,10 +112,10 @@ const handleScreenshotUpload = (e) => {
 const submitOrder = () => {
     if (submitting.value) return
     submitting.value = true
-    form.order_items = orderItems
+    form.order_items = orderItems.value
     form.post(route('orders.store'), {
         onSuccess: () => store.commit('clearCart'),
-        onError: () => { submitting.value = false },
+        onFinish: () => { submitting.value = false },
     })
 }
 
@@ -450,7 +450,7 @@ onUnmounted(() => {
                                         <div class="flex items-center rounded-lg bg-brand-red">
                                             <button type="button" @click="removeItem(item)" class="flex h-8 w-8 items-center justify-center rounded-l-lg text-base font-bold text-white active:bg-brand-red-hover">&minus;</button>
                                             <span class="w-7 text-center text-sm font-bold text-white">{{ item.quantity }}</span>
-                                            <button type="button" @click="addItem(item)" class="flex h-8 w-8 items-center justify-center rounded-r-lg text-base font-bold text-white active:bg-brand-red-hover">+</button>
+                                            <button type="button" @click="addItem(item, item.category_name)" class="flex h-8 w-8 items-center justify-center rounded-r-lg text-base font-bold text-white active:bg-brand-red-hover">+</button>
                                         </div>
                                     </div>
                                 </div>
@@ -531,6 +531,10 @@ onUnmounted(() => {
                              <p v-if="form.errors.payment_screenshot" class="mt-1 text-xs text-red-500">{{ form.errors.payment_screenshot }}</p>
                             </div>
                             </div>
+
+                            <div v-if="Object.keys(form.errors).length" class="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
+                         <p v-for="(msg, key) in form.errors" :key="key">{{ msg }}</p>
+                         </div>
 
                             <button
                                 type="submit"

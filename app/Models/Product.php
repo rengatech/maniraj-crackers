@@ -75,4 +75,8 @@ class Product extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function isNoDiscount(): bool
+{
+    return strtoupper(trim($this->category->category ?? '')) === 'GIFT BOX (NO DISCOUNT)';
+}
 }

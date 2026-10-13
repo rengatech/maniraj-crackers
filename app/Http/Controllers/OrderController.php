@@ -77,7 +77,7 @@ class OrderController extends Controller
 
         $pdf_name =  $this->slugify($customer->name) .'_'. $customer->whatsapp_number .'_'. date("dmY"). '_' . $net_total  .'.pdf';
 
-        $order = Order::with('customer', 'address', 'items')->find($order->id)->toArray();
+        $order = Order::with('customer', 'address', 'items.product')->find($order->id)->toArray();
 
         $order['global_discount'] = $settings->global_discount;
         $order['Company_address'] = $settings->company_address;
@@ -105,9 +105,13 @@ class OrderController extends Controller
 
     protected function getItemTotal($product_id, $quantity, $discount)
     {
-        $product = Product::find($product_id);
+       $product = Product::with('category')->find($product_id);
 
-        return $quantity *  round($product->price - round($product->price * $discount / 100));
+    $unitPrice = $product->isNoDiscount()
+        ? $product->price
+        : round($product->price - round($product->price * $discount / 100));
+
+    return $quantity * $unitPrice;
     }
 
 
